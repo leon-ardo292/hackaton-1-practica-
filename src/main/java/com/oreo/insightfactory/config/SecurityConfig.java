@@ -1,6 +1,5 @@
 package com.oreo.insightfactory.config;
 
-import com.oreo.insightfactory.auth.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
