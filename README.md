@@ -485,3 +485,70 @@ Con mucho cariño desde California,
 
 **Gabriel Romero**
 ❤️
+# Implementacion del Equipo
+
+> Completar antes de entregar: nombres completos y codigos UTEC de los integrantes.
+
+## Ejecutar Localmente
+
+Requisitos:
+- Java 21
+- Maven 3.9+
+
+```bash
+mvn test
+mvn spring-boot:run
+```
+
+La API levanta por defecto en:
+
+```text
+http://localhost:8080
+```
+
+## Variables de Entorno
+
+```properties
+GITHUB_TOKEN=<tu_token_de_GitHub>
+GITHUB_MODELS_URL=https://models.github.ai/inference/chat/completions
+MODEL_ID=openai/gpt-5-mini
+JWT_SECRET=<minimo_32_caracteres_para_firmar_jwt>
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=<tu_email@gmail.com>
+MAIL_PASSWORD=<app_password>
+MAIL_FROM=<tu_email@gmail.com>
+MAIL_SMTP_AUTH=true
+MAIL_SMTP_STARTTLS=true
+DB_URL=jdbc:h2:mem:oreo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+DB_USER=sa
+DB_PASS=
+```
+
+## Endpoints Principales
+
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /sales`
+- `GET /sales`
+- `GET /sales/{id}`
+- `PUT /sales/{id}`
+- `DELETE /sales/{id}`
+- `POST /sales/summary/weekly`
+- `GET /users`
+- `GET /users/{id}`
+- `DELETE /users/{id}`
+
+## Flujo Asincrono
+
+`POST /sales/summary/weekly` retorna inmediatamente `202 Accepted` con `requestId` y publica un `ReportRequestedEvent`. El listener `WeeklyReportListener` usa `@Async` y `@EventListener` para calcular agregados, llamar a GitHub Models y enviar el email con JavaMailSender.
+
+## Postman
+
+La coleccion esta en:
+
+```text
+postman_collection.json
+```
+
+Importala en Postman, configura `baseUrl` si no usas `localhost:8080`, y ejecuta los requests en orden.

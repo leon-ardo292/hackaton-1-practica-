@@ -1,0 +1,8 @@
+package com.oreo.insightfactory.handlerexception;
+
+public class ServiceUnavailableException extends RuntimeException {
+
+    public ServiceUnavailableException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}

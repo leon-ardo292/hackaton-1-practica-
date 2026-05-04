@@ -3,26 +3,26 @@ package com.oreo.insightfactory.dto;
 import com.oreo.insightfactory.model.Sale;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record SaleResponse(
-        Long id,
-        String branch,
+        String id,
         String sku,
-        Integer quantity,
-        BigDecimal unitPrice,
-        BigDecimal totalAmount,
-        LocalDateTime soldAt
+        Integer units,
+        BigDecimal price,
+        String branch,
+        Instant soldAt,
+        String createdBy
 ) {
     public static SaleResponse from(Sale sale) {
         return new SaleResponse(
-                sale.getId(),
-                sale.getBranch(),
+                sale.getPublicId(),
                 sale.getSku(),
-                sale.getQuantity(),
-                sale.getUnitPrice(),
-                sale.getTotalAmount(),
-                sale.getSoldAt()
+                sale.getUnits(),
+                sale.getPrice(),
+                sale.getBranch(),
+                sale.getSoldAt(),
+                sale.getCreatedBy()
         );
     }
 }

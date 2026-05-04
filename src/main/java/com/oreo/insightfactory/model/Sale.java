@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "sales")
@@ -25,23 +25,27 @@ public class Sale {
     private String sku;
 
     @Column(nullable = false)
-    private Integer quantity;
+    private Integer units;
 
     @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal unitPrice;
+    private BigDecimal price;
 
     @Column(nullable = false)
-    private LocalDateTime soldAt;
+    private Instant soldAt;
+
+    @Column(nullable = false)
+    private String createdBy;
 
     protected Sale() {
     }
 
-    public Sale(String branch, String sku, Integer quantity, BigDecimal unitPrice, LocalDateTime soldAt) {
+    public Sale(String sku, Integer units, BigDecimal price, String branch, Instant soldAt, String createdBy) {
         this.branch = branch;
         this.sku = sku;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
+        this.units = units;
+        this.price = price;
         this.soldAt = soldAt;
+        this.createdBy = createdBy;
     }
 
     public Long getId() {
@@ -56,19 +60,35 @@ public class Sale {
         return sku;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public String getPublicId() {
+        return "s_" + id;
     }
 
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
+    public Integer getUnits() {
+        return units;
     }
 
-    public LocalDateTime getSoldAt() {
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Instant getSoldAt() {
         return soldAt;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
     public BigDecimal getTotalAmount() {
-        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+        return price.multiply(BigDecimal.valueOf(units));
+    }
+
+    public void update(String sku, Integer units, BigDecimal price, String branch, Instant soldAt) {
+        this.sku = sku;
+        this.units = units;
+        this.price = price;
+        this.branch = branch;
+        this.soldAt = soldAt;
     }
 }

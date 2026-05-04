@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record SaleRequest(
-        @NotBlank String branch,
         @NotBlank String sku,
-        @NotNull @Min(1) Integer quantity,
-        @NotNull @DecimalMin("0.01") BigDecimal unitPrice,
-        @NotNull LocalDateTime soldAt
+        @NotNull @Min(1) Integer units,
+        @NotNull @DecimalMin("0.01") BigDecimal price,
+        @NotBlank String branch,
+        @NotNull Instant soldAt
 ) {
 }

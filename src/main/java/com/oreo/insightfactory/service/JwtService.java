@@ -1,6 +1,7 @@
 package com.oreo.insightfactory.service;
 
 import com.oreo.insightfactory.model.JwtToken;
+import com.oreo.insightfactory.model.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -33,7 +34,7 @@ public class JwtService {
         this.expirationMinutes = expirationMinutes;
     }
 
-    public JwtToken createToken(Authentication authentication) {
+    public JwtToken createToken(Authentication authentication, AppUser user) {
         Instant now = Instant.now();
         Instant expiresAt = now.plus(expirationMinutes, ChronoUnit.MINUTES);
         List<String> roles = authentication.getAuthorities()
@@ -44,12 +45,14 @@ public class JwtService {
         String token = Jwts.builder()
                 .subject(authentication.getName())
                 .claim("roles", roles)
+                .claim("role", user.getRole().name())
+                .claim("branch", user.getBranch())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiresAt))
                 .signWith(secretKey)
                 .compact();
 
-        return new JwtToken(token, expiresAt);
+        return new JwtToken(token, expiresAt, expirationMinutes * 60);
     }
 
     public String extractUsername(String token) {

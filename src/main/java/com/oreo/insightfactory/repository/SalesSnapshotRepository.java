@@ -21,9 +21,9 @@ public class SalesSnapshotRepository {
     public SalesSnapshot loadSnapshot() {
         try {
             Long totalSales = jdbcTemplate.queryForObject("select count(*) from sales", Long.class);
-            Long totalUnits = jdbcTemplate.queryForObject("select coalesce(sum(quantity), 0) from sales", Long.class);
+            Long totalUnits = jdbcTemplate.queryForObject("select coalesce(sum(units), 0) from sales", Long.class);
             BigDecimal totalRevenue = jdbcTemplate.queryForObject(
-                    "select coalesce(sum(quantity * unit_price), 0) from sales",
+                    "select coalesce(sum(units * price), 0) from sales",
                     BigDecimal.class
             );
 
@@ -42,8 +42,8 @@ public class SalesSnapshotRepository {
     private List<GroupSnapshot> groupBy(String column) {
         String sql = """
                 select %s as name,
-                       coalesce(sum(quantity), 0) as units,
-                       coalesce(sum(quantity * unit_price), 0) as revenue
+                       coalesce(sum(units), 0) as units,
+                       coalesce(sum(units * price), 0) as revenue
                 from sales
                 group by %s
                 order by revenue desc

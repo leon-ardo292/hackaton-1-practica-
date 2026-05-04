@@ -1,10 +1,11 @@
 package com.oreo.insightfactory.dto;
 
-import java.time.Instant;
+import com.oreo.insightfactory.model.UserRole;
 
 public record LoginResponse(
-        String tokenType,
-        String accessToken,
-        Instant expiresAt
+        String token,
+        long expiresIn,
+        UserRole role,
+        String branch
 ) {
 }
